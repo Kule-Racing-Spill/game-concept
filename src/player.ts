@@ -1,4 +1,4 @@
-import { DrawContext, PositionObject, GameContext } from 'web-game-engine';
+import { PositionObject, GameContext } from 'web-game-engine';
 
 export class Player extends PositionObject {
   dir: number = -Math.PI / 2;
@@ -6,8 +6,6 @@ export class Player extends PositionObject {
   constructor(x: number, y: number) {
     super(x, y);
   }
-
-  draw(ctx: DrawContext): void {}
 
   step(ctx: GameContext): void {
     if (ctx.input.key('a')) this.dir -= 0.03;

@@ -11,7 +11,7 @@ export class Enemy extends PositionObject {
     this.randomizeTarget();
   }
 
-  step(ctx: GameContext): void {
+  step(_: GameContext): void {
     // this.pos = this.pos.moveTowards(this.target, 1 * ctx.dtFactor);
     // if (this.pos.lengthTo(this.target) < 32) {
     //   this.randomizeTarget();
