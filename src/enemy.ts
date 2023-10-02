@@ -1,4 +1,9 @@
-import { Vec2, PositionObject, GameContext } from 'web-game-engine';
+import {
+  Vec2,
+  GameContext,
+  PositionObject,
+  DrawContext,
+} from 'web-game-engine';
 
 export class Enemy extends PositionObject {
   target: Vec2 = new Vec2(0, 0);
@@ -10,6 +15,8 @@ export class Enemy extends PositionObject {
   onActivate(_: GameContext) {
     this.randomizeTarget();
   }
+
+  draw(_: DrawContext): void {}
 
   step(_: GameContext): void {
     // this.pos = this.pos.moveTowards(this.target, 1 * ctx.dtFactor);

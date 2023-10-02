@@ -1,25 +1,67 @@
-import { PositionObject, GameContext } from 'web-game-engine';
+import {
+  PositionObject,
+  GameContext,
+  ImageAsset,
+  clamp,
+} from 'web-game-engine';
+
+const marioUp = new ImageAsset('./mario_up.png');
+const marioLeft = new ImageAsset('./mario_left.png');
+const marioRight = new ImageAsset('./mario_right.png');
+
+const rotateAcceleration = 0.0001;
+const maxRotateSpeed = 0.005;
+const maxSpeed = 40;
+const acceleration = 1;
+const dampRotation = 0.9;
+const dampSpeed = 0.96;
 
 export class Player extends PositionObject {
-  dir: number = -Math.PI / 2;
+  dir: number = 0;
+  image: ImageAsset | null = marioUp;
+  speed: number = 0;
+  rotateSpeed: number = 0;
 
   constructor(x: number, y: number) {
     super(x, y);
   }
 
-  step(ctx: GameContext): void {
-    if (ctx.input.key('a')) this.dir -= 0.03;
-    if (ctx.input.key('d')) this.dir += 0.03;
-    this.dir = this.dir % (2 * Math.PI);
+  onActivate(ctx: GameContext): void {
+    marioUp.__load(ctx.game);
+    marioLeft.__load(ctx.game);
+    marioRight.__load(ctx.game);
+  }
 
-    const speed = 3;
+  step(ctx: GameContext): void {
     if (ctx.input.key('w')) {
-      this.pos.x += Math.cos(this.dir) * speed;
-      this.pos.y += Math.sin(this.dir) * speed;
+      this.image = marioUp;
+      this.speed += acceleration;
     }
     if (ctx.input.key('s')) {
-      this.pos.x += Math.cos(this.dir) * -speed;
-      this.pos.y += Math.sin(this.dir) * -speed;
+      this.image = marioUp;
+      this.speed -= acceleration;
     }
+    this.speed = clamp(this.speed, -maxSpeed, maxSpeed);
+    if (!ctx.input.key('w') && !ctx.input.key('s')) {
+      this.speed *= dampSpeed;
+    }
+    this.pos.x += Math.cos(this.dir) * this.speed;
+    this.pos.y += Math.sin(this.dir) * this.speed;
+
+    if (ctx.input.key('a')) {
+      this.image = marioLeft;
+      this.rotateSpeed -= rotateAcceleration;
+    }
+    if (ctx.input.key('d')) {
+      this.image = marioRight;
+      this.rotateSpeed += rotateAcceleration;
+    }
+    this.rotateSpeed = clamp(this.rotateSpeed, -maxRotateSpeed, maxRotateSpeed);
+    if (!ctx.input.key('a') && !ctx.input.key('d')) {
+      this.rotateSpeed *= dampRotation;
+    }
+    this.dir += this.rotateSpeed;
+    while (this.dir < 0) this.dir += 2 * Math.PI;
+    this.dir = this.dir % (2 * Math.PI);
   }
 }
