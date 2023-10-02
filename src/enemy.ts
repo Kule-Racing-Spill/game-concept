@@ -4,9 +4,11 @@ import {
   PositionObject,
   DrawContext,
 } from 'web-game-engine';
+import { mooImage } from './main';
 
 export class Enemy extends PositionObject {
   target: Vec2 = new Vec2(0, 0);
+  image = mooImage;
 
   constructor(x: number, y: number) {
     super(x, y);

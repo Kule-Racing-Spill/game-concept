@@ -9,16 +9,16 @@ const marioUp = new ImageAsset('./mario_up.png');
 const marioLeft = new ImageAsset('./mario_left.png');
 const marioRight = new ImageAsset('./mario_right.png');
 
-const rotateAcceleration = 0.0001;
-const maxRotateSpeed = 0.005;
-const maxSpeed = 40;
+const rotateAcceleration = 0.0003;
+const maxRotateSpeed = 0.015;
+const maxSpeed = 10;
 const acceleration = 1;
 const dampRotation = 0.9;
 const dampSpeed = 0.96;
 
 export class Player extends PositionObject {
   dir: number = 0;
-  image: ImageAsset | null = marioUp;
+  image: ImageAsset = marioUp;
   speed: number = 0;
   rotateSpeed: number = 0;
 
@@ -61,7 +61,7 @@ export class Player extends PositionObject {
       this.rotateSpeed *= dampRotation;
     }
     this.dir += this.rotateSpeed;
-    while (this.dir < 0) this.dir += 2 * Math.PI;
-    this.dir = this.dir % (2 * Math.PI);
+    while (this.dir < -Math.PI) this.dir += 2 * Math.PI;
+    while (this.dir > Math.PI) this.dir -= 2 * Math.PI;
   }
 }

@@ -11,7 +11,7 @@ import { Enemy, randomInt } from './enemy';
 
 const game = new Game(document.querySelector('#app'));
 
-const mooImage = new ImageAsset('./moo.png');
+export const mooImage = new ImageAsset('./moo.png');
 mooImage.__load(game);
 
 const worldSize = 10000;
@@ -19,17 +19,11 @@ const mooNumber = 1000;
 const player = new Player(0, 0);
 const entities: (Player | Enemy)[] = Array(mooNumber)
   .fill(null)
-  .map(
-    () =>
-      new Enemy(
-        randomInt(-worldSize, worldSize),
-        randomInt(-worldSize, worldSize)
-      )
-  );
+  .map(() => new Enemy(randomInt(0, worldSize), randomInt(0, worldSize)));
 entities.push(player);
 entities.forEach((enemy) => enemy.activate(game));
 
-const cameraDistance = 1024;
+const cameraDistance = 512;
 
 game.beforeDraw = (ctx: DrawContext) => {
   const canvasSize = ctx.game.getCanvasSize();
@@ -45,17 +39,6 @@ game.beforeDraw = (ctx: DrawContext) => {
   );
 
   entities.forEach((entity) => {
-    let image: ImageAsset | null = null;
-    if (entity instanceof Player) {
-      image = entity.image;
-    }
-    if (entity instanceof Enemy) {
-      image = mooImage;
-    }
-    if (!image) {
-      return;
-    }
-
     const dir = cameraPos.direction(entity.pos);
     const angle = Math.atan2(dir.y, dir.x);
     const dis = cameraPos.lengthTo(entity.pos);
@@ -65,11 +48,25 @@ game.beforeDraw = (ctx: DrawContext) => {
       canvasSize.y + dis * Math.sin(angle - player.dir - Math.PI / 2)
     );
     if (pos.y < canvasSize.y) {
-      pos.y = canvasSize.y - Math.pow(Math.abs(canvasSize.y - pos.y), 0.5) - 50;
+      pos.y =
+        canvasSize.y -
+        Math.pow(Math.abs(canvasSize.y - pos.y), 0.5) -
+        canvasSize.y / 6;
     }
 
-    ctx.canvas.drawImage(image, pos, scale);
+    ctx.canvas.drawImage(entity.image, pos, scale);
   });
+
+  entities.forEach((entity) => {
+    ctx.canvas.drawImage(entity.image, entity.pos.multiply(0.01), 0.1);
+  });
+  ctx.canvas.drawLine(
+    player.pos.multiply(0.01),
+    player.pos
+      .multiply(0.01)
+      .plus(new Vec2(Math.cos(player.dir), Math.sin(player.dir)).multiply(5)),
+    {}
+  );
 };
 
 new TextObject(() => player.dir.toString(), 16, 16).activate(game);
