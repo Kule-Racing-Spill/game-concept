@@ -42,7 +42,7 @@ game.beforeDraw = (ctx: DrawContext) => {
     const dir = cameraPos.direction(entity.pos);
     const angle = Math.atan2(dir.y, dir.x);
     const dis = cameraPos.lengthTo(entity.pos);
-    const scale = clamp(50 / Math.pow(dis, 0.6), 0.01, 3);
+    const scale = clamp(100 / Math.pow(dis, 0.8), 0.01, 2);
     const pos = new Vec2(
       canvasSize.x / 2 - 16 + dis * Math.cos(angle - player.dir - Math.PI / 2),
       canvasSize.y + dis * Math.sin(angle - player.dir - Math.PI / 2)
