@@ -14,33 +14,33 @@ const level = `
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
-bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
+bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb    c           c     c      bbbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbb                              bbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbbbbbbbbbbbbbb                  bbbbbb
 bbbbbbb       bbbbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
 bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbb c  bbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb              bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb                                     bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
-bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
-bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbb                             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbb                                   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbb                                                      bbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                                    bbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                                         bbbbb
+bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                           bbbb
+bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   bbbb
+bbbbbbbbbbcb                             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   bbb
+bbbbbbbbbbbb                                   bbbbbbbbbbbbbbbbbbbbbbbbbbb   bbb
+bbbbbbbbbbbb   b                                                      bbbb   bbb
+bbbbbbbbbb     bbbbbbbbbbbbbbbbbbb                                    bbb   bbbb
+bbbbbbbbbb   bbbbbbbbbbbbbbbbbbbbb                                         bbbbb
 bbbbbbbbb     bbbbbbbbbbbbbbbbbbbbbbbbbbb                                  bbbbb
 bbbbbbbbb         bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
-bbbbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
+bbbbb        c    bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
+bbbbb  c                                                                   bbbbb
 bbbbb                                                                      bbbbb
-bbbbb                                                                      bbbbb
-bbbbbbbbb                                                             bbbbbbbbbb
+bbbbbbbbb       c                                                     bbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
