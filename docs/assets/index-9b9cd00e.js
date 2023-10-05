@@ -5,14 +5,14 @@ bbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
 bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb    c           c     c      bbbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbb                              bbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbbbbbbbbbbbbbb                  bbbbbb
-bbbbbbb       bbbbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-bbbbbbb       bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+                bbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+              bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+              bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+              bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+              bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbb c  bbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb        bbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb              bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb                                     bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
@@ -32,5 +32,5 @@ bbbbbbbbb       c                                                     bbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-`,g=new H(document.querySelector("#app")),T=new f("./moo.png");T.__load(g);const B=new f("./bush.png");B.__load(g);const u=new $(0,0),w=[u];j.split(`
+`,g=new H(document.querySelector("#app")),T=new f("./moo.png");T.__load(g);const B=new f("./bush.png");B.__load(g);const u=new $(2*32,10*32),w=[u];j.split(`
 `).forEach((n,b)=>n.split("").forEach((t,e)=>{let i;const s=e*32,r=b*32;switch(t){case"b":i=new Q(s,r);break;case"c":i=new X(s,r);break}i&&w.push(i)}));w.forEach(n=>n.activate(g));const R=256;g.beforeDraw=n=>{const b=n.game.getCanvasSize(),t=b.y/3;n.canvas.drawRect(new h(0,0),new h(b.x,t+1),{fillStyle:"blue"}),n.canvas.drawRect(new h(0,t-1),new h(b.x,b.y),{fillStyle:"green"});const e=u.pos.minus(new h(R*Math.cos(u.dir),R*Math.sin(u.dir)));w.sort((i,s)=>e.lengthTo(s.pos)-e.lengthTo(i.pos)),w.forEach(i=>{let s=Math.atan2(i.pos.y-e.y,i.pos.x-e.x)-u.dir;for(;s>Math.PI;)s-=2*Math.PI;for(;s<-Math.PI;)s+=2*Math.PI;if(!(-Math.PI/2<s&&s<Math.PI/2))return;const r=e.lengthTo(i.pos),c=m(100/Math.pow(r,.8),.01,2),o=new h(b.x/2-16,b.y),_=new h(32*Math.pow(r,.4)*Math.cos(s-Math.PI/2),16*Math.pow(r,.3)*Math.sin(s-Math.PI/2));n.canvas.drawImage(i.image,o.plus(_),c)})};g.play();

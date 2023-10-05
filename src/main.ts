@@ -17,14 +17,14 @@ bbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
 bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb    c           c     c      bbbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbb                              bbbbbb
 bbbbbbb                     bbbbbbbbbbbbbbbbbbbbbbbbbbbb                  bbbbbb
-bbbbbbb       bbbbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-bbbbbbb       bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+                bbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+              bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+              bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+              bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+              bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbb c  bbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb        bbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb              bbbbbbbbbbbbbbbb       bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbb                                     bbbbbb
 bbbbbbb            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
@@ -53,7 +53,7 @@ mooImage.__load(game);
 export const bushImage = new ImageAsset('./bush.png');
 bushImage.__load(game);
 
-const player = new Player(0, 0);
+const player = new Player(2 * 32, 10 * 32);
 const entities: (Player | Enemy | Bush)[] = [player];
 level.split('\n').forEach((line, y) =>
   line.split('').forEach((c, x) => {
@@ -119,21 +119,6 @@ game.beforeDraw = (ctx: DrawContext) => {
     );
     ctx.canvas.drawImage(entity.image, origin.plus(offset), scale);
   });
-
-  // Minimap
-
-  // entities.forEach((entity) => {
-  //   ctx.canvas.drawImage(entity.image, entity.pos.multiply(0.01), 0.1);
-  // });
-  // ctx.canvas.drawLine(
-  //   player.pos.multiply(0.01),
-  //   player.pos
-  //     .multiply(0.01)
-  //     .plus(new Vec2(Math.cos(player.dir), Math.sin(player.dir)).multiply(5)),
-  //   {}
-  // );
 };
-
-// new TextObject(() => player.dir.toString(), 16, 16).activate(game);
 
 game.play();
