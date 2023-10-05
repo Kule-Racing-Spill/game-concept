@@ -10,7 +10,7 @@ const marioLeft = new ImageAsset('./mario_left.png');
 const marioRight = new ImageAsset('./mario_right.png');
 
 const rotateAcceleration = 0.0003;
-const maxRotateSpeed = 0.015;
+const maxRotateSpeed = 0.02;
 const maxSpeed = 10;
 const acceleration = 1;
 const dampRotation = 0.9;
@@ -42,7 +42,10 @@ export class Player extends PositionObject {
       this.speed -= acceleration;
     }
     this.speed = clamp(this.speed, -maxSpeed, maxSpeed);
-    if (!ctx.input.key('w') && !ctx.input.key('s')) {
+    if (
+      (this.speed > 0 && !ctx.input.key('w')) ||
+      (this.speed < 0 && !ctx.input.key('s'))
+    ) {
       this.speed *= dampSpeed;
     }
     this.pos.x += Math.cos(this.dir) * this.speed;
@@ -57,7 +60,10 @@ export class Player extends PositionObject {
       this.rotateSpeed += rotateAcceleration;
     }
     this.rotateSpeed = clamp(this.rotateSpeed, -maxRotateSpeed, maxRotateSpeed);
-    if (!ctx.input.key('a') && !ctx.input.key('d')) {
+    if (
+      (this.rotateSpeed > 0 && !ctx.input.key('d')) ||
+      (this.rotateSpeed < 0 && !ctx.input.key('a'))
+    ) {
       this.rotateSpeed *= dampRotation;
     }
     this.dir += this.rotateSpeed;
