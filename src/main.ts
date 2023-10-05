@@ -11,20 +11,39 @@ import { Enemy } from './enemy';
 import { Bush } from './bush';
 
 const level = `
-   bbbbbbbbbbbbbbb
-  b               b
- b                 b
-b        bbb        b
-b       b   b       b
-b   c   b   b       b
-b       b   b       b
-b       b   b       b
-b       b   b       b
-b       b   b       b
- b       bbb       b
-  b               b
-   b             b
-    bbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
+bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
+bbbbbbb                     bbbbbbbbbbbbbbbb                              bbbbbb
+bbbbbbb                     bbbbbbbbbbbbbbbbbbbbbbbbbbbb                  bbbbbb
+bbbbbbb       bbbbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
+bbbbbbb       bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbbbbbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbbbbbbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbbbbbbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb            bbbbbbbbbbbbbbbbbb              bbbbbbbbbbbbbbbb       bbbbbb
+bbbbbbb            bbbbbbbbbbbbbbbbbb                                     bbbbbb
+bbbbbbb            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
+bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
+bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbb                             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbb                                   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbb                                                      bbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                                    bbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                                         bbbbb
+bbbbbbbbb     bbbbbbbbbbbbbbbbbbbbbbbbbbb                                  bbbbb
+bbbbbbbbb         bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
+bbbbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
+bbbbb                                                                      bbbbb
+bbbbb                                                                      bbbbb
+bbbbbbbbb                                                             bbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 `;
 
 const game = new Game(document.querySelector('#app'));
@@ -39,8 +58,8 @@ const entities: (Player | Enemy | Bush)[] = [player];
 level.split('\n').forEach((line, y) =>
   line.split('').forEach((c, x) => {
     let entity;
-    const xx = x * 64;
-    const yy = y * 64;
+    const xx = x * 32;
+    const yy = y * 32;
     switch (c) {
       case 'b':
         entity = new Bush(xx, yy);
@@ -61,7 +80,7 @@ const cameraDistance = 256;
 game.beforeDraw = (ctx: DrawContext) => {
   const canvasSize = ctx.game.getCanvasSize();
 
-  const skyHeight = canvasSize.y / 2;
+  const skyHeight = canvasSize.y / 3;
   ctx.canvas.drawRect(new Vec2(0, 0), new Vec2(canvasSize.x, skyHeight + 1), {
     fillStyle: 'blue',
   });
@@ -93,10 +112,10 @@ game.beforeDraw = (ctx: DrawContext) => {
 
     const dis = cameraPos.lengthTo(entity.pos);
     const scale = clamp(100 / Math.pow(dis, 0.8), 0.01, 2);
-    const origin = new Vec2(canvasSize.x / 2 - 16, (canvasSize.y * 5) / 6);
+    const origin = new Vec2(canvasSize.x / 2 - 16, canvasSize.y);
     const offset = new Vec2(
       32 * Math.pow(dis, 0.4) * Math.cos(angle - Math.PI / 2),
-      Math.pow(dis, 0.4) * Math.sin(angle - Math.PI / 2)
+      16 * Math.pow(dis, 0.3) * Math.sin(angle - Math.PI / 2)
     );
     ctx.canvas.drawImage(entity.image, origin.plus(offset), scale);
   });
