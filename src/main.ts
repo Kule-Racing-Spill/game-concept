@@ -47,6 +47,7 @@ bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 `;
 
 const game = new Game(document.querySelector('#app'));
+game.setOptions({ scale: 1, height: 480, width: 800 });
 
 export const mooImage = new ImageAsset('./moo.png');
 mooImage.__load(game);
@@ -111,13 +112,18 @@ game.beforeDraw = (ctx: DrawContext) => {
     if (!(-Math.PI / 2 < angle && angle < Math.PI / 2)) return;
 
     const dis = cameraPos.lengthTo(entity.pos);
-    const scale = clamp(100 / Math.pow(dis, 0.8), 0.01, 2);
+    const scale = clamp(100 / Math.pow(dis, 0.8), 0.01, 2.5);
     const origin = new Vec2(canvasSize.x / 2 - 16, canvasSize.y);
     const offset = new Vec2(
       32 * Math.pow(dis, 0.4) * Math.cos(angle - Math.PI / 2),
       16 * Math.pow(dis, 0.3) * Math.sin(angle - Math.PI / 2)
     );
-    ctx.canvas.drawImage(entity.image, origin.plus(offset), scale);
+
+    ctx.canvas.drawImage(
+      entity.image,
+      origin.plus(offset),
+      Math.round(scale * 100) / 100
+    );
   });
 };
 
