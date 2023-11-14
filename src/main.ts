@@ -7,16 +7,16 @@ import { Boost } from './boost';
 const level = `
   bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  
  b                                                                            b 
-b               q                                                              b
+b    c    c     q        c       c        c            c                       b
 b                                                                              b
-b     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb     b
+b  c  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb     b
 b    b                                                                    b    b
-b   b                                                           c      c   b   b
 b   b                                                                      b   b
+b c b                                                                      b   b
 b   b                                                                      b q b
+b c b                                                                      b   b
 b   b                                                                      b   b
-b   b                                                                      b   b
-b   b                                                                      b   b
+b c b                                                                      b   b
 b   b                                                                      b   b
 b   b                                                                      b   b
 b   b                                                                      b   b
@@ -77,15 +77,17 @@ b                                          q           q           q           b
 const game = new Game(document.querySelector('#app'));
 game.setOptions({ scale: 1, height: 480, width: 800 });
 
-export const mooImage = new ImageAsset('./moo.png');
-mooImage.__load(game);
+export const sphereImage = new ImageAsset('./sphere.png');
+sphereImage.__load(game);
+export const enemyImage = new ImageAsset('./red_sphere.png');
+enemyImage.__load(game);
 export const barrelImage = new ImageAsset('./barrel.png');
 barrelImage.__load(game);
 export const boostImage = new ImageAsset('./boost.png');
 boostImage.__load(game);
 
 const player = new Player(2 * 32, 10 * 32);
-const entities: (Player | Enemy | Barrel)[] = [player];
+export const entities: (Player | Enemy | Barrel)[] = [player];
 level.split('\n').forEach((line, y) =>
   line.split('').forEach((c, x) => {
     let entity;
@@ -111,27 +113,33 @@ entities.forEach((entity) => entity.activate(game));
 
 const cameraDistance = 256;
 
-game.beforeStep = () => {
-  let min_distance = Infinity;
-  let closest_entity = null;
+export const findClosestEntity = (
+  entities: (Player | Enemy | Barrel)[],
+  pos: Vec2,
+  name: string = '',
+  maxDistance: number = -1
+) => {
+  let minDistance = Infinity;
+  let closestEntity = null;
 
-  for (const entity of entities) {
-    if (entity == player) continue;
-    const distance = entity.pos.lengthTo(player.pos);
-    if (distance < min_distance) {
-      min_distance = distance;
-      closest_entity = entity;
+  for (const other of entities) {
+    if (other.pos == pos) continue;
+    if (name && !(other.constructor.name == name)) continue;
+    const distance = other.pos.lengthTo(pos);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestEntity = other;
     }
   }
+  if (maxDistance == -1) return closestEntity;
+  if (minDistance < maxDistance) return closestEntity;
+  return null;
+};
 
-  if (closest_entity && min_distance < 32) {
-    if (closest_entity instanceof Barrel) {
-      player.speed = 0;
-    }
-    if (closest_entity instanceof Boost) {
-      player.speed *= 1.8;
-    }
-  }
+export const findClosestEntities = (pos: Vec2, n: number) => {
+  return entities
+    .sort((a, b) => a.pos.lengthTo(pos) - b.pos.lengthTo(pos))
+    .slice(0, n);
 };
 
 game.beforeDraw = (ctx) => {

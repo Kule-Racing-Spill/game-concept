@@ -1,24 +1,18 @@
-import {
-  PositionObject,
-  GameContext,
-  ImageAsset,
-  clamp,
-} from 'web-game-engine';
-
-const sphere = new ImageAsset('./sphere.png');
-// const marioLeft = new ImageAsset('./mario_left.png');
-// const marioRight = new ImageAsset('./mario_right.png');
+import { PositionObject, GameContext, clamp } from 'web-game-engine';
+import { findClosestEntities, findClosestEntity, sphereImage } from './main';
+import { Barrel } from './barrel';
+import { Boost } from './boost';
 
 export class Player extends PositionObject {
   dir: number = 0;
-  image: ImageAsset = sphere;
+  image = sphereImage;
   speed: number = 0;
   rotateSpeed: number = 0;
 
-  rotateAcceleration = 0.0003;
-  maxRotateSpeed = 0.02;
-  maxSpeed = 10;
-  acceleration = 1;
+  rotateAcceleration = 0.0004;
+  maxRotateSpeed = 0.025;
+  maxSpeed = 18;
+  acceleration = 0.5;
   dampRotation = 0.9;
   dampSpeed = 0.98;
 
@@ -26,21 +20,17 @@ export class Player extends PositionObject {
     super(x, y);
   }
 
-  onActivate(ctx: GameContext): void {
-    sphere.__load(ctx.game);
-    // marioLeft.__load(ctx.game);
-    // marioRight.__load(ctx.game);
+  getInput(ctx: GameContext, dir: 'w' | 'a' | 's' | 'd'): boolean {
+    return ctx.input.key(dir);
   }
 
   step(ctx: GameContext): void {
-    if (ctx.input.key('w')) {
-      this.image = sphere;
+    if (this.getInput(ctx, 'w')) {
       if (this.speed + this.acceleration < this.maxSpeed) {
         this.speed += this.acceleration;
       }
     }
-    if (ctx.input.key('s')) {
-      this.image = sphere;
+    if (this.getInput(ctx, 's')) {
       if (this.speed - this.acceleration > -this.maxSpeed) {
         this.speed -= this.acceleration;
       }
@@ -50,12 +40,10 @@ export class Player extends PositionObject {
     this.pos.x += Math.cos(this.dir) * this.speed;
     this.pos.y += Math.sin(this.dir) * this.speed;
 
-    if (ctx.input.key('a')) {
-      // this.image = marioLeft;
+    if (this.getInput(ctx, 'a')) {
       this.rotateSpeed -= this.rotateAcceleration;
     }
-    if (ctx.input.key('d')) {
-      // this.image = marioRight;
+    if (this.getInput(ctx, 'd')) {
       this.rotateSpeed += this.rotateAcceleration;
     }
     this.rotateSpeed = clamp(
@@ -64,13 +52,24 @@ export class Player extends PositionObject {
       this.maxRotateSpeed
     );
     if (
-      (this.rotateSpeed > 0 && !ctx.input.key('d')) ||
-      (this.rotateSpeed < 0 && !ctx.input.key('a'))
+      (this.rotateSpeed > 0 && !this.getInput(ctx, 'd')) ||
+      (this.rotateSpeed < 0 && !this.getInput(ctx, 'a'))
     ) {
       this.rotateSpeed *= this.dampRotation;
     }
     this.dir += this.rotateSpeed;
     while (this.dir < -Math.PI) this.dir += 2 * Math.PI;
     while (this.dir > Math.PI) this.dir -= 2 * Math.PI;
+
+    const entities = findClosestEntities(this.pos, 5);
+    const closestEntity = findClosestEntity(entities, this.pos, '', 32);
+    if (closestEntity) {
+      if (closestEntity instanceof Barrel) {
+        this.speed = 0;
+      }
+      if (closestEntity instanceof Boost) {
+        this.speed *= 1.8;
+      }
+    }
   }
 }

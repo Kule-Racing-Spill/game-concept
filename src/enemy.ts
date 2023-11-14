@@ -1,34 +1,59 @@
-import {
-  Vec2,
-  GameContext,
-  PositionObject,
-  DrawContext,
-} from 'web-game-engine';
-import { mooImage } from './main';
+import { Vec2, GameContext, DrawContext } from 'web-game-engine';
+import { enemyImage, findClosestEntities, findClosestEntity } from './main';
+import { Player } from './player';
 
-export class Enemy extends PositionObject {
+export class Enemy extends Player {
   target: Vec2 = new Vec2(0, 0);
-  image = mooImage;
 
   constructor(x: number, y: number) {
     super(x, y);
-  }
-
-  onActivate(_: GameContext) {
-    this.randomizeTarget();
+    this.image = enemyImage;
+    this.rotateAcceleration *= 10;
+    this.maxRotateSpeed *= 2;
   }
 
   draw(_: DrawContext): void {}
 
-  step(_: GameContext): void {
-    // this.pos = this.pos.moveTowards(this.target, 1 * ctx.dtFactor);
-    // if (this.pos.lengthTo(this.target) < 32) {
-    //   this.randomizeTarget();
-    // }
-  }
+  getInput(_: GameContext, key: 'w' | 'a' | 's' | 'd'): boolean {
+    let bestDir = this.dir;
+    let maxDis = 0;
+    const entities = findClosestEntities(this.pos, 20);
+    for (const dirOffset of [
+      -Math.PI / 2,
+      -Math.PI / 4,
+      -Math.PI / 8,
+      0,
+      Math.PI / 8,
+      Math.PI / 4,
+      Math.PI / 2,
+    ]) {
+      for (let dis = 16; dis <= 1024; dis += 16) {
+        const dir = this.dir + dirOffset;
+        const pos = new Vec2(
+          this.pos.x + dis * Math.cos(dir),
+          this.pos.y + dis * Math.sin(dir)
+        );
+        const closestEntity = findClosestEntity(entities, pos, 'Barrel', 48);
+        if (dis > maxDis) {
+          bestDir = dir;
+          maxDis = dis;
+        }
+        if (closestEntity) {
+          if (dir == this.dir && dis <= 32) {
+            this.speed = 0;
+          }
 
-  randomizeTarget() {
-    this.target = new Vec2(randomInt(-200, 200), randomInt(-200, 200));
+          break;
+        }
+      }
+    }
+    const forward = bestDir == this.dir && maxDis > 128;
+
+    if (key == 'd' && bestDir > this.dir) return true;
+    if (key == 'a' && bestDir < this.dir) return true;
+    if (key == 'w' && forward) return true;
+    if (key == 's' && !forward && this.speed > this.acceleration) return true;
+    return Math.random() > 0.95;
   }
 }
 
