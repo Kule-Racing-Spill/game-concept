@@ -1,7 +1,7 @@
 import { Game, ImageAsset, Vec2, clamp } from 'web-game-engine';
 import { Player } from './player';
 import { Enemy } from './enemy';
-import { Bush } from './bush';
+import { Barrel } from './barrel';
 import { Boost } from './boost';
 
 const level = `
@@ -11,7 +11,7 @@ b               q                                                              b
 b                                                                              b
 b     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb     b
 b    b                                                                    b    b
-b   b                                                                      b   b
+b   b                                                           c      c   b   b
 b   b                                                                      b   b
 b   b                                                                      b q b
 b   b                                                                      b   b
@@ -79,13 +79,13 @@ game.setOptions({ scale: 1, height: 480, width: 800 });
 
 export const mooImage = new ImageAsset('./moo.png');
 mooImage.__load(game);
-export const bushImage = new ImageAsset('./bush.png');
-bushImage.__load(game);
+export const barrelImage = new ImageAsset('./barrel.png');
+barrelImage.__load(game);
 export const boostImage = new ImageAsset('./boost.png');
 boostImage.__load(game);
 
 const player = new Player(2 * 32, 10 * 32);
-const entities: (Player | Enemy | Bush)[] = [player];
+const entities: (Player | Enemy | Barrel)[] = [player];
 level.split('\n').forEach((line, y) =>
   line.split('').forEach((c, x) => {
     let entity;
@@ -93,7 +93,7 @@ level.split('\n').forEach((line, y) =>
     const yy = y * 64;
     switch (c) {
       case 'b':
-        entity = new Bush(xx, yy);
+        entity = new Barrel(xx, yy);
         break;
       case 'c':
         entity = new Enemy(xx, yy);
@@ -125,7 +125,7 @@ game.beforeStep = () => {
   }
 
   if (closest_entity && min_distance < 32) {
-    if (closest_entity instanceof Bush) {
+    if (closest_entity instanceof Barrel) {
       player.speed = 0;
     }
     if (closest_entity instanceof Boost) {
