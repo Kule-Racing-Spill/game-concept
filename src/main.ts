@@ -1,49 +1,77 @@
-import {
-  Game,
-  DrawContext,
-  ImageAsset,
-  Vec2,
-  clamp,
-  // TextObject,
-} from 'web-game-engine';
+import { Game, ImageAsset, Vec2, clamp } from 'web-game-engine';
 import { Player } from './player';
 import { Enemy } from './enemy';
 import { Bush } from './bush';
+import { Boost } from './boost';
 
 const level = `
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbb             bbbbbbbbbbbbbbbbbbbbbbbb                             bbbbbbb
-bbbbbbb               bbbbbbbbbbbbbbbbbbbbbb    c           c     c      bbbbbbb
-bbbbbbb                     bbbbbbbbbbbbbbbb                              bbbbbb
-bbbbbbb                     bbbbbbbbbbbbbbbbbbbbbbbbbbbb                  bbbbbb
-                bbb               bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-              bbbbbbbbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb          bbbbbb
-              bbb c bbbbbb        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-              bbb      cbb             bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-              bbb      bbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbb c  bbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb       bbbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb        bbbbbbbbbbbbbbbbb                   bbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb            bbbbbbbbbbbbbbbbbb              bbbbbbbbbbbbbbbb       bbbbbb
-bbbbbbb            bbbbbbbbbbbbbbbbbb                                     bbbbbb
-bbbbbbb            bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                         bbbbbb
-bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb                           bbbb
-bbbbbbbbbbbb       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   bbbb
-bbbbbbbbbbcb                             bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb   bbb
-bbbbbbbbbbbb                                   bbbbbbbbbbbbbbbbbbbbbbbbbbb   bbb
-bbbbbbbbbbbb   b                                                      bbbb   bbb
-bbbbbbbbbb     bbbbbbbbbbbbbbbbbbb                                    bbb   bbbb
-bbbbbbbbbb   bbbbbbbbbbbbbbbbbbbbb                                         bbbbb
-bbbbbbbbb     bbbbbbbbbbbbbbbbbbbbbbbbbbb                                  bbbbb
-bbbbbbbbb         bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
-bbbbb        c    bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb        bbbbb
-bbbbb  c                                                                   bbbbb
-bbbbb                                                                      bbbbb
-bbbbbbbbb       c                                                     bbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  
+ b                                                                            b 
+b               q                                                              b
+b                                                                              b
+b     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb     b
+b    b                                                                    b    b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b q b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b q b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b   b                                                                      b   b
+b    b                                                                    b    b
+b     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb     b
+b                                                                              b
+b                                          q           q           q           b
+ b                                                                            b 
+  bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb  
 `;
 
 const game = new Game(document.querySelector('#app'));
@@ -53,20 +81,25 @@ export const mooImage = new ImageAsset('./moo.png');
 mooImage.__load(game);
 export const bushImage = new ImageAsset('./bush.png');
 bushImage.__load(game);
+export const boostImage = new ImageAsset('./boost.png');
+boostImage.__load(game);
 
 const player = new Player(2 * 32, 10 * 32);
 const entities: (Player | Enemy | Bush)[] = [player];
 level.split('\n').forEach((line, y) =>
   line.split('').forEach((c, x) => {
     let entity;
-    const xx = x * 32;
-    const yy = y * 32;
+    const xx = x * 64;
+    const yy = y * 64;
     switch (c) {
       case 'b':
         entity = new Bush(xx, yy);
         break;
       case 'c':
         entity = new Enemy(xx, yy);
+        break;
+      case 'q':
+        entity = new Boost(xx, yy);
         break;
     }
     if (entity) {
@@ -78,20 +111,39 @@ entities.forEach((entity) => entity.activate(game));
 
 const cameraDistance = 256;
 
-game.beforeDraw = (ctx: DrawContext) => {
+game.beforeStep = () => {
+  let min_distance = Infinity;
+  let closest_entity = null;
+
+  for (const entity of entities) {
+    if (entity == player) continue;
+    const distance = entity.pos.lengthTo(player.pos);
+    if (distance < min_distance) {
+      min_distance = distance;
+      closest_entity = entity;
+    }
+  }
+
+  if (closest_entity && min_distance < 32) {
+    if (closest_entity instanceof Bush) {
+      player.speed = 0;
+    }
+    if (closest_entity instanceof Boost) {
+      player.speed *= 1.8;
+    }
+  }
+};
+
+game.beforeDraw = (ctx) => {
   const canvasSize = ctx.game.getCanvasSize();
 
-  const skyHeight = canvasSize.y / 3;
+  const skyHeight = canvasSize.y / 5;
+  ctx.canvas.drawRect(new Vec2(0, 0), new Vec2(canvasSize.x, canvasSize.y), {
+    fillStyle: 'green',
+  });
   ctx.canvas.drawRect(new Vec2(0, 0), new Vec2(canvasSize.x, skyHeight + 1), {
     fillStyle: 'blue',
   });
-  ctx.canvas.drawRect(
-    new Vec2(0, skyHeight - 1),
-    new Vec2(canvasSize.x, canvasSize.y),
-    {
-      fillStyle: 'green',
-    }
-  );
 
   const cameraPos = player.pos.minus(
     new Vec2(
@@ -116,7 +168,7 @@ game.beforeDraw = (ctx: DrawContext) => {
     const origin = new Vec2(canvasSize.x / 2 - 16, canvasSize.y);
     const offset = new Vec2(
       32 * Math.pow(dis, 0.4) * Math.cos(angle - Math.PI / 2),
-      16 * Math.pow(dis, 0.3) * Math.sin(angle - Math.PI / 2)
+      16 * Math.pow(dis, 0.35) * Math.sin(angle - Math.PI / 2)
     );
 
     ctx.canvas.drawImage(

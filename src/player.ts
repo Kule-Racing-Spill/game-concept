@@ -5,66 +5,69 @@ import {
   clamp,
 } from 'web-game-engine';
 
-const marioUp = new ImageAsset('./mario_up.png');
-const marioLeft = new ImageAsset('./mario_left.png');
-const marioRight = new ImageAsset('./mario_right.png');
-
-const rotateAcceleration = 0.0003;
-const maxRotateSpeed = 0.02;
-const maxSpeed = 10;
-const acceleration = 1;
-const dampRotation = 0.9;
-const dampSpeed = 0.96;
+const sphere = new ImageAsset('./sphere.png');
+// const marioLeft = new ImageAsset('./mario_left.png');
+// const marioRight = new ImageAsset('./mario_right.png');
 
 export class Player extends PositionObject {
   dir: number = 0;
-  image: ImageAsset = marioUp;
+  image: ImageAsset = sphere;
   speed: number = 0;
   rotateSpeed: number = 0;
+
+  rotateAcceleration = 0.0003;
+  maxRotateSpeed = 0.02;
+  maxSpeed = 10;
+  acceleration = 1;
+  dampRotation = 0.9;
+  dampSpeed = 0.98;
 
   constructor(x: number, y: number) {
     super(x, y);
   }
 
   onActivate(ctx: GameContext): void {
-    marioUp.__load(ctx.game);
-    marioLeft.__load(ctx.game);
-    marioRight.__load(ctx.game);
+    sphere.__load(ctx.game);
+    // marioLeft.__load(ctx.game);
+    // marioRight.__load(ctx.game);
   }
 
   step(ctx: GameContext): void {
     if (ctx.input.key('w')) {
-      this.image = marioUp;
-      this.speed += acceleration;
+      this.image = sphere;
+      if (this.speed + this.acceleration < this.maxSpeed) {
+        this.speed += this.acceleration;
+      }
     }
     if (ctx.input.key('s')) {
-      this.image = marioUp;
-      this.speed -= acceleration;
+      this.image = sphere;
+      if (this.speed - this.acceleration > -this.maxSpeed) {
+        this.speed -= this.acceleration;
+      }
     }
-    this.speed = clamp(this.speed, -maxSpeed, maxSpeed);
-    if (
-      (this.speed > 0 && !ctx.input.key('w')) ||
-      (this.speed < 0 && !ctx.input.key('s'))
-    ) {
-      this.speed *= dampSpeed;
-    }
+
+    this.speed *= this.dampSpeed;
     this.pos.x += Math.cos(this.dir) * this.speed;
     this.pos.y += Math.sin(this.dir) * this.speed;
 
     if (ctx.input.key('a')) {
-      this.image = marioLeft;
-      this.rotateSpeed -= rotateAcceleration;
+      // this.image = marioLeft;
+      this.rotateSpeed -= this.rotateAcceleration;
     }
     if (ctx.input.key('d')) {
-      this.image = marioRight;
-      this.rotateSpeed += rotateAcceleration;
+      // this.image = marioRight;
+      this.rotateSpeed += this.rotateAcceleration;
     }
-    this.rotateSpeed = clamp(this.rotateSpeed, -maxRotateSpeed, maxRotateSpeed);
+    this.rotateSpeed = clamp(
+      this.rotateSpeed,
+      -this.maxRotateSpeed,
+      this.maxRotateSpeed
+    );
     if (
       (this.rotateSpeed > 0 && !ctx.input.key('d')) ||
       (this.rotateSpeed < 0 && !ctx.input.key('a'))
     ) {
-      this.rotateSpeed *= dampRotation;
+      this.rotateSpeed *= this.dampRotation;
     }
     this.dir += this.rotateSpeed;
     while (this.dir < -Math.PI) this.dir += 2 * Math.PI;
