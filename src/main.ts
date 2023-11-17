@@ -77,13 +77,13 @@ b                                          q           q           q           b
 const game = new Game(document.querySelector('#app'));
 game.setOptions({ scale: 1, height: 480, width: 800 });
 
-export const sphereImage = new ImageAsset('./sphere.png');
+export const sphereImage = new ImageAsset('./sphere-16.png');
 sphereImage.__load(game);
-export const enemyImage = new ImageAsset('./red_sphere.png');
+export const enemyImage = new ImageAsset('./sphere-16-red.png');
 enemyImage.__load(game);
 export const barrelImage = new ImageAsset('./barrel.png');
 barrelImage.__load(game);
-export const boostImage = new ImageAsset('./boost.png');
+export const boostImage = new ImageAsset('./boost-16.png');
 boostImage.__load(game);
 
 const player = new Player(2 * 32, 10 * 32);
@@ -172,7 +172,7 @@ game.beforeDraw = (ctx) => {
     if (!(-Math.PI / 2 < angle && angle < Math.PI / 2)) return;
 
     const dis = cameraPos.lengthTo(entity.pos);
-    const scale = clamp(100 / Math.pow(dis, 0.8), 0.01, 2.5);
+    const scale = clamp(200 / Math.pow(dis, 0.8), 0.01, 10);
     const origin = new Vec2(canvasSize.x / 2 - 16, canvasSize.y);
     const offset = new Vec2(
       32 * Math.pow(dis, 0.4) * Math.cos(angle - Math.PI / 2),

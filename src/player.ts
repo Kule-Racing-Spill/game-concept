@@ -20,8 +20,8 @@ export class Player extends PositionObject {
     super(x, y);
   }
 
-  getInput(ctx: GameContext, dir: 'w' | 'a' | 's' | 'd'): boolean {
-    return ctx.input.key(dir);
+  getInput(ctx: GameContext, key: 'w' | 'a' | 's' | 'd'): boolean {
+    return ctx.input.key(key);
   }
 
   step(ctx: GameContext): void {
